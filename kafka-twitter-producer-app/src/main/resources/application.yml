@@ -1,0 +1,14 @@
+kafka:
+  bootstrapAddress: kafka:9092
+  topics:
+    tweets-message-topic: tweets-message-topic
+server:
+  port: 8080
+logging:
+  file:
+    path: .
+hbc-client:
+  api-key: "key"
+  api-secret: "secret"
+  access-token: "token"
+  access-token-secret: "token-secret"

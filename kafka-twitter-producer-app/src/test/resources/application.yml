@@ -1,0 +1,11 @@
+
+kafka:
+  bootstrapAddress: localhost:9092
+  topics:
+    tweets-message-topic: tweets-message-topic
+elasticsearch-host: localhost:9200
+hbc-client:
+  api-key: "key"
+  api-secret: "secret"
+  access-token: "token"
+  access-token-secret: "token-secret"
