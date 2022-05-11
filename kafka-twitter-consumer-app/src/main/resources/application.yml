@@ -1,0 +1,11 @@
+
+kafka:
+  bootstrapAddress: kafka:9092
+elasticsearch:
+  host: "elasticsearch:9200"
+  index: "twitter"
+logging:
+  file:
+    path: .
+server:
+  port: 8080

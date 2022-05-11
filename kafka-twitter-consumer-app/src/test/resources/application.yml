@@ -1,0 +1,6 @@
+
+kafka:
+  bootstrapAddress: localhost:9092
+elasticsearch:
+  host: "localhost:9200"
+  index: "twitter"
