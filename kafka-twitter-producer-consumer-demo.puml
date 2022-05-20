@@ -1,0 +1,29 @@
+@startuml
+'https://plantuml.com/deployment-diagram
+
+node "Kafka" {
+  queue [tweets-message-topic]
+}
+
+node "OpenjdkConsumerContainer" {
+  component [kafka-twitter-consumer-app]
+}
+
+node "OpenjdkProducerContainer" {
+  component [kafka-twitter-producer-app]
+}
+
+node "Zookeeper" {
+  component [zookeeper]
+}
+
+node "InitKafka" {
+  component [kafka-temp]
+}
+
+Kafka --> Zookeeper
+OpenjdkConsumerContainer --> Kafka
+OpenjdkProducerContainer --> Kafka
+InitKafka --> Kafka
+
+@enduml

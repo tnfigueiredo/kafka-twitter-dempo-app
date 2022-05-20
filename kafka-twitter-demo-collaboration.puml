@@ -1,0 +1,20 @@
+@startuml
+component "kafka-twitter-producer"
+component "kafka-twitter-consumer"
+component "hbc-core-twitter-client"
+queue "tweets-message-topic"
+database Twitter
+database ElasticSearch
+
+(kafka-twitter-producer) -- (hbc-core-twitter-client): 1: ask tweets <&arrow-bottom>\n3: deliver tweets <&arrow-top>
+(hbc-core-twitter-client) --> (Twitter): 2: query tweets <&arrow-bottom>
+(kafka-twitter-producer) --> (tweets-message-topic) : 4: post filtered tweets <&arrow-right>
+(kafka-twitter-consumer) --> (tweets-message-topic) : <&arrow-bottom> 5: consume posted tweets messages
+(kafka-twitter-consumer) --> (ElasticSearch) : 6: publish tweets to ElasticSearch <&arrow-bottom>
+
+'Others arrows icons
+'<&arrow-left>
+'<&arrow-right>
+'<&arrow-top>
+'<&arrow-bottom>
+@enduml

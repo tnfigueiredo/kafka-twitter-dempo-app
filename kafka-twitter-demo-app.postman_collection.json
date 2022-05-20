@@ -1,0 +1,93 @@
+{
+	"info": {
+		"_postman_id": "59e9019e-67e0-4400-bb59-80e099fda232",
+		"name": "kafka-twitter-demo-app",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "create-elasticsearch-twitter-index",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "localhost:9200/twitter",
+					"host": [
+						"localhost"
+					],
+					"port": "9200",
+					"path": [
+						"twitter"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create-elasticsearch-twitter-index-config",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"index.mapping.total_fields.limit\": 10000\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:9200/twitter/_settings",
+					"host": [
+						"localhost"
+					],
+					"port": "9200",
+					"path": [
+						"twitter",
+						"_settings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "trigger-kafka-twitter-consumer",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/twitter-consumers",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"twitter-consumers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "stop-kafka-twitter-consumer",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/twitter-consumers",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"twitter-consumers"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

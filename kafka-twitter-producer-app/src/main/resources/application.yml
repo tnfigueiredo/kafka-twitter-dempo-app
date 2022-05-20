@@ -8,7 +8,7 @@ logging:
   file:
     path: .
 hbc-client:
-  api-key: "key"
-  api-secret: "secret"
-  access-token: "token"
-  access-token-secret: "token-secret"
+  api-key: "jDjdWMpNLlUWsnOjPNSUrl4ab"
+  api-secret: "7mGTiF21kqoxQgNEwFwewPzpVnlTRkuOGE1jaKYBON6tL1rakD"
+  access-token: "926121108843257857-up8xjm9lexCQeakRnSWyfWDtEHndKex"
+  access-token-secret: "yftVlTAbT48EnxNZeIkar4GeBN1sgvkiEXyZWgWiEP7gb"

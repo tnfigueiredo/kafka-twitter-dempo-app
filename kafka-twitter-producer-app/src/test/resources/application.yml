@@ -5,7 +5,7 @@ kafka:
     tweets-message-topic: tweets-message-topic
 elasticsearch-host: localhost:9200
 hbc-client:
-  api-key: "key"
-  api-secret: "secret"
-  access-token: "token"
-  access-token-secret: "token-secret"
+  api-key: "wWJ17rCnvCQ9XOhPOGnkYLcla"
+  api-secret: "kaqvIzF2VZIH37YFHLQk0P5VbalROSPffF6JZ9CXsrJVuLmL4X"
+  access-token: "926121108843257857-fElZCG6bJIzhXrZG204jpU1HGpmjfuH"
+  access-token-secret: "ZPFSpyZztCbH5iuJ3gidB4bHLR0mNHO8Sgx44Wz4wOQHE"
