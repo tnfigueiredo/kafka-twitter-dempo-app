@@ -184,5 +184,75 @@ kafka-twitter-demo-app_zookeeper_1                    /etc/confluent/docker/run 
 kibana                                                /usr/local/bin/dumb-init - ...   Up       0.0.0.0:5601->5601/tcp,:::5601->5601/tcp
 ```
 Once all the services are running it is possible to access the kibana service through the address [http://localhost:5601/app/kibana](http://localhost:5601/app/kibana).
-The Kibana will the interface used to check the information that our consumer will be indexing from the tweeters that our producer will
+The Kibana will be the interface used to check the information that our consumer will be indexing from the tweeters that our producer will
 read and publish based on our searching criteria implemented.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/tnfigueiredo/kafka-twitter-dempo-app/main/kibana-home.png" title="Kibana Home">
+</p>
+
+Before trigger the tweets' consumption it will be necessary to create an index in the ElasticSearch repository. To reach this we created a few request in the
+[Postman collection](kafka-twitter-demo-app.postman_collection.json) attached to the project. But they can be created also through curl
+commands on the terminal also. To crate the index the collection has the request create-elasticsearch-twitter-index. The corresponding
+curl command for this request is the following one:
+
+```shell
+curl --location --request PUT 'localhost:9200/twitter'
+```
+
+The result is possible to see accessing the Dashboard left panel option, Index Management menu item:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/tnfigueiredo/kafka-twitter-dempo-app/main/kibana-index-management.png" title="Kibana Index Management">
+</p>
+
+Besides, the index creation used for saving the tweets it is necessary to modify a configuration related to the content to be stored for
+the tweets that are going to be sent to our Kafka consumer. Some tweets had a heavy content and without this configuration some of them
+will fail the saving operation. The request on the Postman collection is the create-elasticsearch-twitter-index-config. Here follows the
+corresponding curl command:
+
+```shell
+curl --location --request PUT 'localhost:9200/twitter/_settings' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "index.mapping.total_fields.limit": 10000
+}'
+```
+
+After that it is possible to start our producer application tweets' consumption. The main responsibility of this
+component at the solution is to read the tweets based on some parameters and produce Kafka events to allow our
+consumer application to consume and store their content. To make it easier to handle eht start/stop mechanism for our solution
+the tweets' consumption is encapsulated in an asynchronous process that is triggered and stopped through a RESTful
+endpoint. The endpoint that triggers the consumption is Postman collection request trigger-kafka-twitter-consumer.
+Its corresponding curl command is the following one:
+
+```shell
+curl --location --request POST 'localhost:8080/api/twitter-consumers'
+```
+
+Once we trigger the tweets' consumption, it will be possible to check on the Kibana interface the tweet messages
+stored on the ElasticSearch repository. To check the application activity it is possible to access the container and
+check the application logs:
+
+```shell
+sudo docker exec -it kafka-twitter-demo-app_kafka-twitter-producer-app_1 bash
+root@ff25f7ff4b53:/app# ls
+kafka-twitter-producer-app.jar	spring.log
+```
+
+To stop the tweets' consumption is just to trigger the Postman request stop-kafka-twitter-consumer. Its
+corresponding curl command is the following one:
+
+```shell
+curl --location --request DELETE 'localhost:8080/api/twitter-consumers'
+```
+
+This was the whole lifecycle from our sample since the building of the application structure, passing
+by its execution and stopping the tweets' consumption. After that, to shut down the whole environment
+stack it is just to run the following command:
+
+```shell
+sudo docker-compose down
+```
+
+
