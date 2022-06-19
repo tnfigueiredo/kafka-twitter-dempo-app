@@ -219,9 +219,29 @@ curl --location --request PUT 'localhost:9200/twitter/_settings' \
 }'
 ```
 
-After that it is possible to start our producer application tweets' consumption. The main responsibility of this
-component at the solution is to read the tweets based on some parameters and produce Kafka events to allow our
-consumer application to consume and store their content. To make it easier to handle eht start/stop mechanism for our solution
+After checking that the index is created it is necessary to create and index pattern configuration to use it on the data search
+for the tweets that we ar going to read buy our applications. This configuration is necessary to allow us to check the data consumed
+by our application after we trigger the mechanisms we have on our components. It is necessary to access the menu item index patterns
+on the Kibana menu session and select our created menu index pattern:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/tnfigueiredo/kafka-twitter-dempo-app/main/kibana-index-created.png" title="Kibana Index For Search">
+</p>
+
+The whole lifecycle from our sample happens since the building of the application structure, passing
+by its execution, working on the data consumption, and stopping the tweets' consumption. After that, to shut down the whole environment
+stack it is just to run the following command:
+
+```shell
+sudo docker-compose down
+```
+
+### Producing and consuming data in the sample
+
+Once there is the configurations needed on the sample all set up, it is possible to start the application that will consume
+the tweets' information and see all of them indexed on the ElasticSearch repository. After the step of creating the index necessary to be managed on kibana interface, it is possible to start our producer application tweets' consumption. 
+The main responsibility of this component at the solution is to read the tweets based on some parameters and produce Kafka events to allow our
+consumer application to consume and store their content. To make it easier to handle the start/stop mechanism for our solution
 the tweets' consumption is encapsulated in an asynchronous process that is triggered and stopped through a RESTful
 endpoint. The endpoint that triggers the consumption is Postman collection request trigger-kafka-twitter-consumer.
 Its corresponding curl command is the following one:
@@ -238,7 +258,24 @@ check the application logs:
 sudo docker exec -it kafka-twitter-demo-app_kafka-twitter-producer-app_1 bash
 root@ff25f7ff4b53:/app# ls
 kafka-twitter-producer-app.jar	spring.log
+less -f spring.log
 ```
+
+And the application interface configuration to check the information handled by the sample application can be accessed on the left panel
+option called "Kibana >> Saved Objects". It is possible to trigger this option and select our index pattern option it is possible to check the information
+on raw filtering options, or even on filtering options defined into the kibana interface:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/tnfigueiredo/kafka-twitter-dempo-app/main/kibana-index-saved-objects.png" title="Kibana Index Saved Objects">
+</p>
+
+To search the information stored on the ElasticSearch repository it is necessary to access the menu option "Discovery" on the left panel 
+of the Kibana interface. This option will bring an interface that will allow to search the fields of the indexed information, making possible to
+filter data based on any criteria from the saved objects structure and content.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/tnfigueiredo/kafka-twitter-dempo-app/main/kibana-criteria-search.png" title="Kibana Search Interface">
+</p>
 
 To stop the tweets' consumption is just to trigger the Postman request stop-kafka-twitter-consumer. Its
 corresponding curl command is the following one:
@@ -246,13 +283,3 @@ corresponding curl command is the following one:
 ```shell
 curl --location --request DELETE 'localhost:8080/api/twitter-consumers'
 ```
-
-This was the whole lifecycle from our sample since the building of the application structure, passing
-by its execution and stopping the tweets' consumption. After that, to shut down the whole environment
-stack it is just to run the following command:
-
-```shell
-sudo docker-compose down
-```
-
-
